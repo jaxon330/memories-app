@@ -12,5 +12,6 @@ Memories-app is a simple social media app that allows users to post interesting 
 * Express
 * Material-UI
 * Redux
+* MongoDB
   
 Live: https://memories-app-front.netlify.app/
