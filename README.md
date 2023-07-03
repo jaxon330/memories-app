@@ -1,5 +1,6 @@
 # Memories-app
-![image](https://github.com/jaxon330/memories-app/assets/86989396/66e07af8-3905-422e-8ce0-7b45452930c3)
+![image](https://github.com/jaxon330/memories-app/assets/86989396/051eb059-d4e5-418c-8ca5-c663e73340cf)
+
 
 ## Introduction
 
@@ -12,3 +13,4 @@ Memories-app is a simple social media app that allows users to post interesting 
 * Material-UI
 * Redux
   
+Live: https://memories-app-front.netlify.app/
