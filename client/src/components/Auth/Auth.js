@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
+import { useGoogleLogin } from '@react-oauth/google';
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import Input from './Input';
+import Icon from './icon'
 
 import useStyles from './styles';
 
@@ -20,6 +22,22 @@ const Auth = () => {
     setIsSignUp((prevSignUp) => !prevSignUp)
     handleShowPassword(false)
   }
+
+  const login = useGoogleLogin({
+    onSuccess: async codeResponse => {
+        console.log(codeResponse)
+    },
+    onError: error => console.log(error)
+  });
+
+//   const googleSuccess = async (res) => {
+//     console.log(res);
+//   }
+
+//   const googleFailure = (error) => {
+//     console.log(error);
+//     console.log('Google Sign In was unsuccessfull. Try again later')
+//   }
   return (
     <Container component='main' maxWidth="xs">
         <Paper className={classes.paper} elevation={3}>
@@ -45,6 +63,16 @@ const Auth = () => {
                 <Button type='submit' fullWidth variant='contained' color='primary' className={classes.submit}>
                     {isSignup ? 'Sign Up' : 'Sign In'}
                 </Button>
+                    <Button 
+                        className={classes.googleButton} 
+                        color='primary' 
+                        fullWidth 
+                        onClick={() => login() }
+                        startIcon={<Icon />} 
+                        variant='contained' 
+                    >
+                        Google Sign In
+                    </Button>
                 <Grid container justifyContent='flex-end'>
                     <Grid item>
                         <Button onClick={switchMode}>
