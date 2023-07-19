@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import { useGoogleLogin } from '@react-oauth/google';
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import Input from './Input';
 import Icon from './icon'
@@ -10,8 +12,9 @@ import useStyles from './styles';
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false)
-
-  const [isSignup, setIsSignUp] = useState(true)
+  const [isSignup, setIsSignUp] = useState(false)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
 
@@ -24,20 +27,25 @@ const Auth = () => {
   }
 
   const login = useGoogleLogin({
-    onSuccess: async codeResponse => {
-        console.log(codeResponse)
+    onSuccess: async (codeResponse) => {
+        const token = codeResponse?.access_token;
+        try {
+            const profileResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+              headers: {
+                Authorization: `Bearer ${token}`, // Pass the access token here
+              },
+            });
+            const result = await profileResponse.json();
+            dispatch({ type: 'AUTH', data: { result, token }})
+            navigate('/')
+
+          } catch (error) {
+            console.error('Error fetching Google profile:', error);
+          }
     },
     onError: error => console.log(error)
   });
 
-//   const googleSuccess = async (res) => {
-//     console.log(res);
-//   }
-
-//   const googleFailure = (error) => {
-//     console.log(error);
-//     console.log('Google Sign In was unsuccessfull. Try again later')
-//   }
   return (
     <Container component='main' maxWidth="xs">
         <Paper className={classes.paper} elevation={3}>
