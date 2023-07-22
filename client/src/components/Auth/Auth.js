@@ -6,21 +6,35 @@ import { useNavigate } from 'react-router-dom'
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import Input from './Input';
 import Icon from './icon'
+import { signup, signin } from '../../actions/auth'
 
 import useStyles from './styles';
+
+const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
 
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false)
   const [isSignup, setIsSignUp] = useState(false)
+  const [formData, setFormData] = useState(initialState)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
 
-  const handleChange = () => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value} )
+  } 
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(isSignup) {
+        dispatch(signup(formData, navigate))
+    } else {
+        dispatch(signin(formData, navigate))
+    }
   }
+
   const switchMode = () => {
     setIsSignUp((prevSignUp) => !prevSignUp)
     handleShowPassword(false)
@@ -53,7 +67,7 @@ const Auth = () => {
                 <LockOpenOutlinedIcon />
             </Avatar>
             <Typography variant='h5'>{isSignup ? 'Sign Up' : 'Sign In'}</Typography>
-            <form className={classes.form}>
+            <form className={classes.form} onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     {
                         isSignup && (

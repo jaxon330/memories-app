@@ -1,7 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { AppBar, Avatar, Toolbar, Typography, Button } from '@material-ui/core';
-import { googleLogout } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 
 import useStyles from './styles'
